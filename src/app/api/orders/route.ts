@@ -73,7 +73,7 @@ export async function POST(request: Request) {
     const { customerName, customerEmail, shippingAddress, paymentMethod, items } = validation.data;
 
     // Ejecutar la creacion de orden en una transaccion atomica
-    const newOrder = await prisma.$transaction(async (tx) => {
+    const newOrder = await prisma.$transaction(async (tx: any) => {
       let subtotal = 0;
       const orderItemsToCreate: Array<{
         productId: string;

@@ -21,7 +21,7 @@ export async function GET(request: Request) {
     const skip = (page - 1) * limit;
 
     // Construccion de clausula WHERE tipada
-    const where: Prisma.ProductWhereInput = {};
+    const where: any = {};
 
     // Busqueda por palabra clave
     if (query) {
@@ -60,7 +60,7 @@ export async function GET(request: Request) {
     }
 
     // Ordenamiento
-    let orderBy: Prisma.ProductOrderByWithRelationInput = { createdAt: "desc" };
+    let orderBy: any = { createdAt: "desc" };
     switch (sort) {
       case "price_asc":
         orderBy = { price: "asc" };
@@ -102,7 +102,7 @@ export async function GET(request: Request) {
       }),
     ]);
 
-    const categories = categoriesRaw.map((c) => c.category);
+    const categories = categoriesRaw.map((c: any) => c.category);
 
     return NextResponse.json({
       products,

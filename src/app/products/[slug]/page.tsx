@@ -188,7 +188,7 @@ export default async function ProductDetailPage({ params }: Props) {
       {/* Seccion Interactivas de Resenas y Calificaciones */}
       <ReviewSection
         productId={product.id}
-        initialReviews={product.reviews.map((r) => ({
+        initialReviews={product.reviews.map((r: any) => ({
           id: r.id,
           rating: r.rating,
           title: r.title,

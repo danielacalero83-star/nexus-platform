@@ -46,7 +46,7 @@ export async function POST(request: Request, { params }: Params) {
     const { rating, title, comment } = validation.data;
 
     // Transaccion atomica para crear resena y recalcular promedio
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: any) => {
       const review = await tx.review.create({
         data: {
           productId,
@@ -65,7 +65,7 @@ export async function POST(request: Request, { params }: Params) {
 
       const totalCount = allReviews.length;
       const avgRating =
-        allReviews.reduce((sum, item) => sum + item.rating, 0) / totalCount;
+        allReviews.reduce((sum: number, item: any) => sum + item.rating, 0) / totalCount;
       const roundedAvg = Math.round(avgRating * 10) / 10;
 
       await tx.product.update({
