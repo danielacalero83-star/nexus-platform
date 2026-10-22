@@ -76,14 +76,14 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             <?php endif; ?>
 
-            <form action="register.php" method="POST">
+            <form action="register.php" method="POST" autocomplete="off" id="nexus-register-form">
                 <div class="mb-3">
                     <label class="form-label small fw-bold text-muted">Nombre Completo</label>
                     <div class="input-group">
                         <span class="input-group-text bg-dark border-secondary text-muted">
                             <i class="bi bi-person"></i>
                         </span>
-                        <input type="text" name="name" required class="form-control form-control-nexus" value="<?= htmlspecialchars($name) ?>" placeholder="Ing. Fernando Lopez">
+                        <input type="text" name="name" id="reg-name" required class="form-control form-control-nexus" value="<?= ($_SERVER['REQUEST_METHOD'] === 'POST' ? htmlspecialchars($name) : '') ?>" placeholder="Ing. Fernando Lopez" autocomplete="off">
                     </div>
                 </div>
 
@@ -93,7 +93,7 @@ require_once __DIR__ . '/includes/header.php';
                         <span class="input-group-text bg-dark border-secondary text-muted">
                             <i class="bi bi-envelope"></i>
                         </span>
-                        <input type="email" name="email" required class="form-control form-control-nexus" value="<?= htmlspecialchars($email) ?>" placeholder="contacto@empresa.com">
+                        <input type="email" name="email" id="reg-email" required class="form-control form-control-nexus" value="<?= ($_SERVER['REQUEST_METHOD'] === 'POST' ? htmlspecialchars($email) : '') ?>" placeholder="contacto@empresa.com" autocomplete="off">
                     </div>
                 </div>
 
@@ -103,7 +103,7 @@ require_once __DIR__ . '/includes/header.php';
                         <span class="input-group-text bg-dark border-secondary text-muted">
                             <i class="bi bi-lock"></i>
                         </span>
-                        <input type="password" name="password" id="reg-password" required class="form-control form-control-nexus" placeholder="********">
+                        <input type="password" name="password" id="reg-password" required class="form-control form-control-nexus" placeholder="********" autocomplete="new-password">
                     </div>
                     
                     <!-- Checklist de Requisitos de Contrasena (RF-01) -->
@@ -131,5 +131,19 @@ require_once __DIR__ . '/includes/header.php';
         </div>
     </div>
 </div>
+
+<script>
+    // Limpieza de campos al cargar para evitar autorrelleno no deseado del navegador
+    window.addEventListener('pageshow', function () {
+        <?php if ($_SERVER['REQUEST_METHOD'] !== 'POST'): ?>
+        var nameInput = document.getElementById('reg-name');
+        var emailInput = document.getElementById('reg-email');
+        if (nameInput) nameInput.value = '';
+        if (emailInput) emailInput.value = '';
+        <?php endif; ?>
+        var passInput = document.getElementById('reg-password');
+        if (passInput) passInput.value = '';
+    });
+</script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
