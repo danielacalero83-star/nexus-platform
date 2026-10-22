@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String
+  password  String
+  role      String   @default("USER") // "USER" | "ADMIN"
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  reviews Review[]
+  orders  Order[]
+}
+
+model Product {
+  id             String      @id @default(cuid())
+  name           String
+  slug           String      @unique
+  description    String
+  specifications String?
+  price          Float
+  comparePrice   Float?
+  stock          Int         @default(0)
+  sku            String      @unique
+  imageUrl       String
+  category       String
+  featured       Boolean     @default(false)
+  status         String      @default("ACTIVE") // "ACTIVE" | "DRAFT" | "ARCHIVED"
+  rating         Float       @default(0.0)
+  reviewCount    Int         @default(0)
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+
+  reviews    Review[]
+  orderItems OrderItem[]
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  rating    Int
+  title     String
+  comment   String
+  userName  String
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  orderNumber     String      @unique
+  userId          String
+  customerName    String
+  customerEmail   String
+  shippingAddress String
+  subtotal        Float
+  tax             Float
+  shippingCost    Float
+  total           Float
+  status          String      @default("COMPLETED") // "PENDING" | "PROCESSING" | "SHIPPED" | "COMPLETED" | "CANCELLED"
+  paymentMethod   String      @default("TRANSFER")
+  paymentStatus   String      @default("PAID")
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  user  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  items OrderItem[]
+}
+
+model OrderItem {
+  id          String   @id @default(cuid())
+  orderId     String
+  productId   String
+  productName String
+  unitPrice   Float
+  quantity    Int
+  subtotal    Float
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+}

@@ -1,0 +1,74 @@
+-- NEXUS Enterprise Platform - Esquema Relacional de Base de Datos
+-- Compatible con SQLite, MySQL 8.x / MariaDB y PostgreSQL
+
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(150) NOT NULL,
+    email VARCHAR(190) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'USER',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name VARCHAR(200) NOT NULL,
+    slug VARCHAR(220) UNIQUE NOT NULL,
+    description TEXT NOT NULL,
+    specifications TEXT,
+    price DECIMAL(10,2) NOT NULL,
+    compare_price DECIMAL(10,2) NULL,
+    stock INT NOT NULL DEFAULT 0,
+    sku VARCHAR(50) UNIQUE NOT NULL,
+    image_url TEXT NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    featured TINYINT(1) NOT NULL DEFAULT 0,
+    status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
+    rating DECIMAL(2,1) NOT NULL DEFAULT 0.0,
+    review_count INT NOT NULL DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS reviews (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    product_id INT NOT NULL,
+    user_id INT NOT NULL,
+    user_name VARCHAR(150) NOT NULL,
+    rating INT NOT NULL,
+    title VARCHAR(150) NOT NULL,
+    comment TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_number VARCHAR(50) UNIQUE NOT NULL,
+    user_id INT NOT NULL,
+    customer_name VARCHAR(150) NOT NULL,
+    customer_email VARCHAR(190) NOT NULL,
+    shipping_address TEXT NOT NULL,
+    subtotal DECIMAL(10,2) NOT NULL,
+    tax DECIMAL(10,2) NOT NULL,
+    shipping_cost DECIMAL(10,2) NOT NULL,
+    total DECIMAL(10,2) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'COMPLETED',
+    payment_method VARCHAR(50) NOT NULL DEFAULT 'CREDIT_CARD',
+    payment_status VARCHAR(20) NOT NULL DEFAULT 'PAID',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS order_items (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    order_id INT NOT NULL,
+    product_id INT NOT NULL,
+    product_name VARCHAR(200) NOT NULL,
+    unit_price DECIMAL(10,2) NOT NULL,
+    quantity INT NOT NULL,
+    subtotal DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE RESTRICT
+);
