@@ -8,6 +8,15 @@ El repositorio implementa una **arquitectura dual de alto rendimiento**:
 
 ---
 
+## 🌐 Despliegue en la Nube (Cloud Deployment)
+
+La plataforma se encuentra publicada y en ejecución continua en la infraestructura cloud de **Render**:
+- **URL Pública de Producción:** [https://nexus-platform-ihwj.onrender.com](https://nexus-platform-ihwj.onrender.com)
+- **Infraestructura:** Contenedor Docker (PHP 8.2 Alpine + SQLite + Bootstrap 5.3)
+- **Disponibilidad:** 100% Operativo y accesible globalmente sin requerir configuración adicional.
+
+---
+
 ## 1. Galería Visual de la Plataforma (Capturas de Pantalla)
 
 | Módulo | Captura de Pantalla | Descripción Técnica |
