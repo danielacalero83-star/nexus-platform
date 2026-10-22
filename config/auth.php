@@ -47,7 +47,9 @@ function login_user(array $user): void {
 }
 
 function logout_user(): void {
+    $_SESSION['user'] = null;
     unset($_SESSION['user']);
+    unset($_SESSION['cart']);
     session_regenerate_id(true);
 }
 
