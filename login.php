@@ -57,6 +57,23 @@ require_once __DIR__ . '/includes/header.php';
         </div>
 
         <div class="card card-nexus p-4 shadow-lg mb-4">
+            <!-- Credenciales de Demostracion Rapida para Evaluadores -->
+            <div class="p-3 mb-3 rounded-3 bg-black bg-opacity-50 border border-secondary border-opacity-50">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="small text-muted fw-bold text-uppercase" style="font-size: 0.7rem; letter-spacing: 0.5px;">
+                        <i class="bi bi-info-circle me-1 text-primary"></i> Acceso Rápido Demo
+                    </span>
+                </div>
+                <div class="d-flex gap-2">
+                    <button type="button" class="btn btn-sm btn-outline-primary flex-fill text-nowrap py-1" onclick="document.getElementById('login-email').value='admin@nexus.com'; document.getElementById('login-password').value='AdminPassword2026!';">
+                        <i class="bi bi-shield-check me-1"></i> Admin
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-light flex-fill text-nowrap py-1" onclick="document.getElementById('login-email').value='usuario@nexus.com'; document.getElementById('login-password').value='UserPassword2026!';">
+                        <i class="bi bi-person me-1"></i> Usuario
+                    </button>
+                </div>
+            </div>
+
             <?php if (!empty($error)): ?>
                 <div class="alert alert-danger py-2 small d-flex align-items-center gap-2 mb-3" role="alert">
                     <i class="bi bi-exclamation-triangle-fill"></i>
